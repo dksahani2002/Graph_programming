@@ -1,0 +1,47 @@
+// C++ program to print DFS traversal from a  given vertex in a given graph
+#include<bits/stdc++.h>
+using namespace std;
+//graph class represent a directed graph using adjacency list reprentation
+class Graph
+{
+public:
+    map<int , bool> visited;
+    map<int , list<int>> adj;
+    
+    //Function to add edge to the Graph
+    void addEdge(int v , int w);
+    
+    //DFS traversal 0f graph reachable from V
+    void DFS(int v);
+};
+void Graph::addEdge(int v , int w){
+    adj[v].push_back(w); // add w to v's list
+}
+void Graph::DFS(int v){
+    //mark all node visited and print it
+    visited[v]=true;
+    cout<<v<<" ";
+    
+    //recur for all the vertices adjacent to this vertex
+    list <int>:: iterator i;
+    for(i = adj[v].begin(); i != adj[v].end() ; ++i){
+        if(!visited[*i])
+            DFS(*i);
+    }
+}
+int main(){
+    Graph g;
+    g.addEdge(0 , 1);
+    g.addEdge(0  , 2);
+    g.addEdge(1 , 2);
+    g.addEdge(2 , 0);
+    g.addEdge(2 , 3);
+    g.addEdge(3 , 3);
+    
+    cout<<"Following is depth first ttraversal"<<"(starting from vertex 2)\n";
+    g.DFS(2);
+    
+    
+    
+    return 0;
+}
