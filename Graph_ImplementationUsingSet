@@ -1,0 +1,80 @@
+  // A c++ program to demonstrate adjacency list reprentation of graphs using std::sets
+ #include<bits/stdc++.h>
+ using namespace std;
+ 
+ struct Graph{
+     int V;
+     set<int , greater<int> >*adjList;
+ };
+ 
+ // A utility function that creates graph of V vertex
+ Graph* createGraph(int V)
+ {
+     Graph* graph = new Graph;
+     graph->V = V;
+     
+     //create array of sets representing adjacency lists. size of array will be V
+     graph->adjList  = new set<int ,greater<int> >[V];
+     return graph;
+ }
+ //Add edge to an undirected graph
+ void addEdge(Graph* graph , int src , int dest)
+ {
+     //add edge from source to destination. a new element is inserted to the adjacency list of src.
+     graph->adjList[src].insert(dest);
+     
+     //since graph is undirected , add edge from dest to src also
+     graph->adjList[dest].insert(src);
+ }
+ //A utility function to print the adjacency list reprentation of graph-
+ void printGraph(Graph* graph)
+ {
+     for(int i=0; i<graph->V;++i){
+         set<int ,greater<int> > lst = graph->adjList[i];
+         cout<< endl<<"Adjacency list of vertex" <<i<<endl;
+         
+         for(auto itr = lst.begin(); itr!= lst.end(); ++itr){
+             cout<<*itr<<" ";
+         }
+         cout<<endl;
+     }
+ }
+ // Searches for a given edge in the graph-
+ void searchEdge(Graph* graph , int src , int dest)
+ {
+     auto itr = graph->adjList[src].find(dest);
+     if(itr== graph->adjList[src].end())
+        cout<< endl<<"edge from"<<src <<"to"<<dest<<"not found"<<endl;
+     else
+        cout<<endl<<"edge from"<<src<<"to"<<dest<<"found"<<endl;
+ }
+ int main()
+ {
+     // create the above given graph in above figure
+     int V = 5;
+     struct Graph* graph = createGraph(V);
+     addEdge(graph , 0, 1);
+     addEdge(graph, 0, 4);
+     addEdge(graph, 1, 2);
+     addEdge(graph, 1, 3);
+     addEdge(graph, 1, 4);
+     addEdge(graph, 2, 3);
+     addEdge(graph, 3, 4);
+        //print the adjacency list reprenation of above graph 
+        printGraph(graph);
+        //search the given edge in the graph 
+        searchEdge(graph , 2 , 1);
+        searchEdge(graph , 0 , 3);
+        return 0;
+ 
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
