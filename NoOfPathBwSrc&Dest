@@ -1,0 +1,83 @@
+ //C++ program to find all possible path from source to destination
+ #include<vector>
+ #include<cassert>
+ #include<list>
+ #include<iostream>
+ using namespace std;
+ 
+ //A directed graph using adjacency list reprentation;
+ //Every vertex hold the list of all adjacent neighbour reachable from that
+ class Graph
+ {
+    public:
+        Graph(int vertices);
+        void add_edge(int src , int dest);
+        int count_paths(int src , int dest , int vertices);
+    private:
+        int m_vertices;
+        list<int>*m_neighbours;
+        void path_counter(int src , int dest , int &path_count, vector<bool>visited);
+ };
+ Graph::Graph(int vertices)
+ {
+     m_vertices=vertices;
+     m_neighbours= new list<int>[vertices];
+ }
+ void Graph:: add_edge(int src , int dest)
+ {
+     m_neighbours[src].push_back(dest);
+ }
+ int Graph::count_paths(int src , int dest , int vertices)
+ {
+     int path_count = 0;
+     vector<bool>visited(vertices, false);
+     path_counter(src,dest,path_count,visited);
+     return path_count;
+ }
+ void Graph::path_counter(int src,int dest,int &path_count,vector<bool>visited)
+ {
+     visited[src]=true;
+     if(src==dest)
+        path_count++;
+     else
+     {
+         for(auto neighbour: m_neighbours[src]){
+             if(!visited[neighbour])
+                path_counter(neighbour,dest ,path_count , visited);
+         }
+     }
+ }
+ // Tests...
+int main()
+{
+    // Create a graph given in the above diagram - see link
+    Graph g(5);
+    g.add_edge(0, 1);
+    g.add_edge(0, 2);
+    g.add_edge(0, 4);
+    g.add_edge(1, 3);
+    g.add_edge(1, 4);
+    g.add_edge(2, 3);
+    g.add_edge(2, 1);
+      g.add_edge(3, 2);
+    // Validate it...
+    cout<<g.count_paths(0, 4,5);
+ 
+    return 0;
+} 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
