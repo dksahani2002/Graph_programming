@@ -1,0 +1,69 @@
+//C++ program to find minimum intial vertices to reach whole matrix
+ #include<bits/stdc++.h>
+ using namespace std;
+ 
+ const int MAX = 100;
+ 
+ //(n,m) is current cell from which we have to dfs
+ //N , M are no of rows and column
+ 
+ void dfs(int n , int m , bool visited[][MAX] , int adj[][MAX] , int N , int M){
+     
+     //mark current cell as visited
+     visited[n][m] = 1;
+     
+     //if below neighbour is valid i.e has value less than or equal to current cell
+     if(n + 1 < N && adj[n][m]>= adj[n + 1][m] && !visited[n + 1][m])
+        dfs(n + 1 , m , visited , adj , N , M );
+     
+     //if right neighbour is valid i.e has value less than or equal to current cell
+     if(m + 1 < M && adj[n][m]>= adj[n][m+ 1] && !visited[n][m + 1])
+        dfs(n , m + 1 , visited , adj , N , M);
+        
+     //if above neighbour is valid i.e has value less than or equal to current cell
+     if(n - 1 >=0 && adj[n][m]>= adj[n - 1][m] && !visited[n - 1][m])
+        dfs(n - 1 , m , visited , adj , N , M);
+     
+     //if top neighbour is valid i.e has value less than or equal to current cell
+     if( m - 1 >=0 && adj[n][m]>=adj[n][m- 1] && !visited[n][m - 1])
+        dfs(n , m -1 , visited , adj , N , M);
+ }
+ 
+ void PrintMinSources(int adj[][MAX] , int N , int M)
+ {
+     // storing cell value and cell indices in a std::vector
+     vector<pair<long int , pair<int , int>>>x;
+     for(int i=0;i<N;i++){
+         for(int j=0;j<M;j++)
+            x.push_back(make_pair(adj[i][j] , make_pair(i, j)));
+     }
+     
+     //sorting newly  created array according to cell value 
+     sort(x.begin() , x.end());
+     
+     //create a visited array and initialise as false 
+     bool visited[N][MAX];
+     memset(visited , false , sizeof(visited));
+     
+     //apply dfs for each vertex with highest value 
+     for(int i= x.size()- 1 ; i>=0 ; i--)
+     {
+         //if the given vertex is not visited then include it in the set 
+         if(!visited[x[i].second.first][x[i].second.second])
+         {
+             cout<<x[i].second.first<<" "<<x[i].second.second<<endl;
+             dfs( x[i].second.first , x[i].second.second , visited , adj , N ,M);
+         }
+     }
+ }
+ 
+int main()
+{
+    int N = 2, M = 2;
+ 
+    int adj[N][MAX] = {{3, 3},
+                       {1, 1}};
+    PrintMinSources(adj, N, M);
+    return 0;
+} 
+ 
